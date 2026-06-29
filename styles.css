@@ -60,6 +60,17 @@ img {
     border-radius: 99px;
 }
 
+.sidebar-social {
+    position: fixed;
+    left: 28px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    z-index: 50;
+}
+
 .sidebar-social a {
     color: var(--text-muted);
     font-size: 18px;
@@ -254,7 +265,7 @@ img {
     border: 1px solid var(--cyan);
     border-radius: 6px;
     cursor: pointer;
-    transition: all var((--transition));
+    transition: all var(--transition);
 }
 
 .btn-secondary:hover {
@@ -364,7 +375,7 @@ img {
     min-height: 32px;
 }
 
-.type-cursor {
+.typed-cursor {
     animation: blink 1s step-end infinite;
     color: var(--cyan);
 }
@@ -449,7 +460,7 @@ img {
     color: rgba(0, 212, 170, 0.3);
 }
 
-.scroll-hint {
+/* .scroll-hint {
     position: absolute;
     bottom: 32px;
     left: 50%;
@@ -464,7 +475,7 @@ img {
     letter-spacing: 2px;
     animation: float 2.5s ease-in-out infinite;
     z-index: 2;
-}
+} */
 
 @keyframes float {
 
@@ -533,10 +544,19 @@ img {
 .timeline::before {
     content: '';
     position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+}
+
+.timeline-item {
+    position: relative;
     margin-bottom: 48px;
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 0.5s ease, trasnform 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .timeline-item.visible {
@@ -561,12 +581,12 @@ img {
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 24px 28px;
-    transition: border-color var(--transition, transform var(--transition));
+    transition: border-color var(--transition), transform var(--transition);
 }
 
 .timeline-card:hover {
     border-color: rgba(0, 212, 170, 0.35);
-    transform: var(--transition);
+    transform: translateX(4px);
 }
 
 .timeline-header {
@@ -668,6 +688,12 @@ img {
     border-color: var(--cyan);
     color: var(--text-primary);
     transform: translateY(-2px);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
 }
 
 .project-card {
@@ -813,8 +839,7 @@ img {
     letter-spacing: 0.5px;
 }
 
-.contact-form,
-.btn-primary {
+.contact-form .btn-primary {
     width: 100%;
     text-align: center;
 }
