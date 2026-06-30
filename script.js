@@ -1,8 +1,10 @@
+/* NAVBAR SCROOL */
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 40);
 });
 
+/* MOBILE MENU */
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
@@ -10,6 +12,7 @@ navLinks.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => navLinks.classList.remove('open'));
 });
 
+/* PARTICLE CANVAS */
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -52,6 +55,7 @@ function drawParticles() {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
     }
 
+    /* connect nearby particles */
     for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
             const dx = particles[i].x - particles[j].x;
@@ -68,6 +72,7 @@ function drawParticles() {
         }
     }
 
+    /* dots */
     particles.forEach(p => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -85,6 +90,7 @@ function drawParticles() {
 
 drawParticles();
 
+/* TYPEWRITER */
 const rolesPT = ['Estudante de ADS', 'Suporte TI N1', 'Dev em formação'];
 const rolesEN = ['ADS Student', 'IT Support N1', 'Developer in training'];
 let lang = 'pt';
@@ -117,6 +123,7 @@ function typeWriter() {
 
 typeWriter();
 
+/* SCROLL REVEAL */
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
         if (e.isIntersecting) {
@@ -130,10 +137,12 @@ document.querySelectorAll('.fade-in, .timeline-item, .stat-card, .skill-item, .p
     observer.observe(el);
 });
 
+/* stagger timeline cards */
 document.querySelectorAll('.timeline-item').forEach((el, i) => {
     el.style.transitionDelay = `${i * 0.1}s`;
 })
 
+/* LANGUAGE SWITCHER */
 const langBtn = document.getElementById('langBtn');
 langBtn.addEventListener('click', () => {
     lang = lang === 'pt' ? 'en' : 'pt';
@@ -147,12 +156,53 @@ langBtn.addEventListener('click', () => {
         } else if (el.tagName === 'A' || el.tagName === 'BUTTON') {
             el.textContent = val;
         } else {
-            el.innetHTML = val;
+            el.innerHTML = val;
         }
     })
 
+    /* reset typewriter */
     charIdx = 0;
     deleting = false;
     roleIdx = 0;
     typedEl.textContent = '';
 })
+
+/* ACTIVE NAV LINK */
+const sections = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a[href^="#"]');
+
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navAs.forEach(a => {
+        a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--cyan)' : '';
+    });
+});
+
+/* CONTACT FORM (placeholder) */
+document.getElementById('contactForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const original = btn.textContent;
+    btn.textContent = lang === 'pt' ? 'Mensagem enviada!' : 'Message sent!';
+    btn.style.background = '#0f7a5c';
+    setTimeout(() => {
+        btn.textContent = original;
+        btn.style.background = '';
+        e.target.reset();
+    }, 3000);
+})
+
+/* SMOOTH SCROLL */
+document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const target = document.querySelector(targetId);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start'});
+        }
+    });
+});
