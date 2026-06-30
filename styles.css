@@ -729,7 +729,7 @@ img {
     gap: 14px;
 }
 
-.project-lins a {
+.project-links a {
     font-size: 17px;
     color: var(--text-muted);
     transition: color var(--transition);
