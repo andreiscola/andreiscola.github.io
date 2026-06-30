@@ -42,12 +42,11 @@ window.addEventListener('resize', createParticles);
 
 function drawParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
 
-ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+ctx.strokeStyle = 'rgba(255,255,255,0.025)';
 ctx.lineWidth = 1;
 for (let x = 0; x < canvas.width; x += 80) {
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(canvas.height); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
 }
 for (let y = 0; y < canvas.height; y += 80) {
     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
@@ -60,7 +59,7 @@ for (let i = 0; i < particles.length; i++) {
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 120) {
             ctx.beginPath();
-            ctx.strokeStyle = 'rgba(129,140,248,${0.07 * (1 - dist / 120)})';
+            ctx.strokeStyle = `rgba(129,140,248,${0.07 * (1 - dist / 120)})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -68,4 +67,21 @@ for (let i = 0; i < particles.length; i++) {
         }
     }
 }
+
+particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
+    ctx.fill();
+
+    p.x += p.dx;
+    p.y += p.dy;
+    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+})
+
+    requestAnimationFrame(drawParticles);
+}
+
+drawParticles();
 
