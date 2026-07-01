@@ -196,13 +196,31 @@ document.getElementById('contactForm').addEventListener('submit', e => {
 })
 
 /* SMOOTH SCROLL */
-document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const targetId = link.getAttribute('href');
         const target = document.querySelector(targetId);
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start'});
+        if (!target) return;
+
+        const start = window.scrollY;
+        const end = target.getBoundingClientRect().top + window.scrollY;
+        const distance = end - start;
+        const duration = 800;
+        let startTime = null;
+
+        function ease(t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
         }
+
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            window.scrollTo(0, start + distance * ease(progress));
+            if (progress < 1) requestAnimationFrame(step);
+        }
+
+        requestAnimationFrame(step);
     });
 });
