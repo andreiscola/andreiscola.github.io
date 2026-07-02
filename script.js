@@ -182,16 +182,39 @@ window.addEventListener('scroll', () => {
 });
 
 /* CONTACT FORM (placeholder) */
-document.getElementById('contactForm').addEventListener('submit', e => {
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
     const original = btn.textContent;
-    btn.textContent = lang === 'pt' ? 'Mensagem enviada!' : 'Message sent!';
-    btn.style.background = '#0f7a5c';
+
+    btn.textContent = lang === 'pt' ? 'Enviando...' : 'Sending...';
+    btn.disabled = true;
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json'}
+        });
+
+        if (response.ok) {
+            btn.textContent = lang === 'pt' ? 'Mensagem enviada!' : 'Message sent!';
+            btn.style.background = '#0f7a5c'
+            form.reset();
+        } else {
+            btn.textContent = lang === 'pt' ? 'Erro ao enviar. Tente novamente.' : 'Error. Try again.'
+            btn.style.background = '#7f1d1d';
+        }
+    } catch {
+        btn.textContent = lang === 'pt' ? 'Erro de conexão.' : 'Connection error.';
+        btn.style.background = '#7f1d1d';
+    }
+
     setTimeout(() => {
         btn.textContent = original;
         btn.style.background = '';
-        e.target.reset();
+        btn.disabled = false;
     }, 3000);
 })
 
