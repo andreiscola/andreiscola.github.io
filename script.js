@@ -247,3 +247,37 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
         requestAnimationFrame(step);
     });
 });
+
+const projectModal = document.getElementById('projectModal');
+const projectModalClose = document.getElementById('projectModalClose');
+const projectModalTitle = document.getElementById('projectModalTitle');
+const projectModalBar = document.getElementById('projectModalBar');
+
+document.querySelectorAll('.project-links a[aria-label="Demo"]').forEach(link => {
+    link.addEventListener('click' , (e) => {
+        e.preventDefault();
+        const card = link.closest('.project-card');
+        const title = card.querySelector('.project-title').textContent;
+        projectModalTitle.textContent = title;
+        projectModal.classList.add('open');
+        setTimeout(() => {
+            projectModalBar.style.width = '65%';
+        }, 100);
+    });
+});
+
+function closeProjectModal () {
+    projectModal.classList.remove('open');
+    setTimeout(() => {
+        projectModalBar.style.width = '0%';
+    }, 300);
+}
+
+projectModalClose.addEventListener('click', closeProjectModal);
+projectModal.addEventListener('click', (e) => {
+    if (e.target === projectModal) closeProjectModal();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeProjectModal();
+});
