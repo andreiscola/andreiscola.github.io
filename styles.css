@@ -100,7 +100,7 @@ img {
     justify-content: space-between;
     padding: 0 40px;
     z-index: 100;
-    transition: background var(--transition), box-shadow var(--transition);
+    transition: background 0.1s, box-shadow var(--transition);
 }
 
 .navbar.scrolled {
